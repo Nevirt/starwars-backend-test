@@ -99,3 +99,35 @@ Los tests incluyen caminos de éxito y error: ApiKey faltante/incorrecta (401), 
   1) Ejecuta SignUp o Login para obtener `jwt` y colócalo en el environment.
   2) Probar endpoints de Movies (añadir `movieId` devuelto por Create).
   3) Probar `Admin/Sync Films` con un JWT de Admin.
+
+## Pruebas de rendimiento y capturas en Postman: 
+<img width="1232" height="505" alt="image" src="https://github.com/user-attachments/assets/aafef8ac-4231-432b-945f-2d4329c7ade0" />
+<img width="1169" height="465" alt="image" src="https://github.com/user-attachments/assets/f44cc12b-d568-49e9-a3e4-8d18d452cd2f" />
+
+Primero se registra -> se inicia sesion -> se hacen las consultas copiando el token generado y agregandolo:
+<img width="672" height="254" alt="image" src="https://github.com/user-attachments/assets/9f97422d-f7c0-46bf-9ca5-2df370fa2c16" />
+
+Al hacer el login, el admin es el único que puede sincronizar los films de la api de star wars, SWAPI:
+<img width="262" height="64" alt="image" src="https://github.com/user-attachments/assets/955bd7ed-0d4b-4e05-bfb2-98dab0c15547" />
+<img width="1162" height="337" alt="image" src="https://github.com/user-attachments/assets/3b2f7d74-cce0-4ae1-ba19-13e545cf6908" />
+
+Al realizarlo, ya se pueden visualizar la lista del metodo get:
+<img width="1170" height="878" alt="image" src="https://github.com/user-attachments/assets/f5790000-4f54-4006-9aeb-baf38510f27a" />
+
+Luego los users son los que pueden consultar un film especifico:
+<img width="1177" height="381" alt="image" src="https://github.com/user-attachments/assets/647351e6-7f6d-4f98-bc1a-b4bda642aa45" />
+
+Y para finalizar, el admin nuevamente es el único que puede agregar. modificar o eliminar:
+<img width="1169" height="593" alt="image" src="https://github.com/user-attachments/assets/26ee4a72-2aee-403c-a872-ab34dd044eb0" />
+<img width="1170" height="586" alt="image" src="https://github.com/user-attachments/assets/f6b78312-c12c-4373-839c-9b7317ca64d9" />
+<img width="1191" height="211" alt="image" src="https://github.com/user-attachments/assets/40ba03f7-6b1d-42e4-8223-10c8604616f9" />
+
+
+
+
+
+
+
+
+
+
