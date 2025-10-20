@@ -39,7 +39,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("RequireUser", policy => policy.RequireRole("User", "Admin"));
+    options.AddPolicy("RequireRegularUser", policy => policy.RequireRole("User"));
 });
 
 // Controllers

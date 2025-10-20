@@ -27,7 +27,7 @@ public class MoviesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [Authorize(Policy = "RequireUser")]
+    [Authorize(Policy = "RequireRegularUser")]
     public async Task<ActionResult<MovieResponse>> GetById(int id)
     {
         var movie = await _movieService.GetByIdAsync(id);
