@@ -70,5 +70,3 @@ public class MovieService : IMovieService
         return true;
     }
 }
-
-

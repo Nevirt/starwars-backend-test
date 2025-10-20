@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StarWars.Api</name>
+    </assembly>
+    <members>
+        <member name="M:StarWars.Api.Controllers.AdminController.SyncFilms">
+            <summary>
+            Sincroniza el listado de películas desde SWAPI. Solo Administradores.
+            </summary>
+        </member>
+        <member name="M:StarWars.Api.Controllers.AuthController.SignUp(StarWars.Api.DTOs.SignUpRequest)">
+            <summary>
+            Registra un nuevo usuario y retorna un JWT.
+            </summary>
+        </member>
+        <member name="M:StarWars.Api.Controllers.AuthController.Login(StarWars.Api.DTOs.LoginRequest)">
+            <summary>
+            Autentica un usuario y retorna un JWT.
+            </summary>
+        </member>
+        <member name="M:StarWars.Api.Controllers.MoviesController.GetAll">
+            <summary>
+            Obtiene el listado de películas.
+            </summary>
+        </member>
+        <member name="M:StarWars.Api.Controllers.MoviesController.GetById(System.Int32)">
+            <summary>
+            Obtiene los detalles de una película por Id. Requiere rol Usuario Regular.
+            </summary>
+        </member>
+        <member name="M:StarWars.Api.Controllers.MoviesController.Create(StarWars.Api.DTOs.MovieCreateRequest)">
+            <summary>
+            Crea una nueva película. Requiere rol Administrador.
+            </summary>
+        </member>
+        <member name="M:StarWars.Api.Controllers.MoviesController.Update(System.Int32,StarWars.Api.DTOs.MovieUpdateRequest)">
+            <summary>
+            Actualiza una película existente. Requiere rol Administrador.
+            </summary>
+        </member>
+        <member name="M:StarWars.Api.Controllers.MoviesController.Delete(System.Int32)">
+            <summary>
+            Elimina una película. Requiere rol Administrador.
+            </summary>
+        </member>
+        <member name="T:StarWars.Api.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:StarWars.Api.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:StarWars.Api.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:StarWars.Api.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

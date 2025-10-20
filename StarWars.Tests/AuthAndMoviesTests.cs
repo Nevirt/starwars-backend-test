@@ -38,6 +38,7 @@ public class AuthAndMoviesTests : IClassFixture<CustomFactory>
 	public AuthAndMoviesTests(CustomFactory factory)
 	{
 		_client = factory.CreateClient();
+		_client.DefaultRequestHeaders.Add("ApiKey", "sUApBf-2QBOra+~_(o*G~gd4JKD0#");
 	}
 
 	[Fact]
@@ -83,6 +84,65 @@ public class AuthAndMoviesTests : IClassFixture<CustomFactory>
 
 		var delete = await _client.DeleteAsync($"/api/movies/{created.Id}");
 		delete.StatusCode.Should().Be(System.Net.HttpStatusCode.NoContent);
+	}
+
+	[Fact]
+	public async Task ApiKey_missing_returns_401()
+	{
+		var client = new CustomFactory().CreateClient();
+		var resp = await client.GetAsync("/api/movies");
+		resp.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+	}
+
+	[Fact]
+	public async Task ApiKey_invalid_returns_401()
+	{
+		var client = new CustomFactory().CreateClient();
+		client.DefaultRequestHeaders.Add("ApiKey", "invalid");
+		var resp = await client.GetAsync("/api/movies");
+		resp.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
+	}
+
+	[Fact]
+	public async Task Movie_GetById_not_found_returns_404()
+	{
+		// Sign up as regular user to call GetById
+		var email = $"u{Guid.NewGuid():N}@mail.com";
+		var signup = await _client.PostAsJsonAsync("/api/auth/signup", new { email, password = "Passw0rd!", role = "User" });
+		var auth = await signup.Content.ReadFromJsonAsync<AuthResponseDto>();
+		_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth!.Token);
+
+		var resp = await _client.GetAsync("/api/movies/999999");
+		resp.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+	}
+
+	[Fact]
+	public async Task Movie_Update_Delete_not_found_returns_404()
+	{
+		// Admin
+		var email = $"a{Guid.NewGuid():N}@mail.com";
+		var signup = await _client.PostAsJsonAsync("/api/auth/signup", new { email, password = "Passw0rd!", role = "Admin" });
+		var auth = await signup.Content.ReadFromJsonAsync<AuthResponseDto>();
+		_client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth!.Token);
+
+		var update = await _client.PutAsJsonAsync("/api/movies/999999", new { title = "x" });
+		update.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+
+		var delete = await _client.DeleteAsync("/api/movies/999999");
+		delete.StatusCode.Should().Be(System.Net.HttpStatusCode.NotFound);
+	}
+
+	[Fact]
+	public async Task Signup_duplicate_email_returns_400_and_Login_invalid_401()
+	{
+		var email = $"dup{Guid.NewGuid():N}@mail.com";
+		var first = await _client.PostAsJsonAsync("/api/auth/signup", new { email, password = "Passw0rd!", role = "User" });
+		first.EnsureSuccessStatusCode();
+		var dup = await _client.PostAsJsonAsync("/api/auth/signup", new { email, password = "Passw0rd!", role = "User" });
+		dup.StatusCode.Should().Be(System.Net.HttpStatusCode.BadRequest);
+
+		var badLogin = await _client.PostAsJsonAsync("/api/auth/login", new { email, password = "wrong" });
+		badLogin.StatusCode.Should().Be(System.Net.HttpStatusCode.Unauthorized);
 	}
 
 	private sealed record AuthResponseDto(string Token, string Email, string Role);

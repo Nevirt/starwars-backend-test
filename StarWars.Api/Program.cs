@@ -5,6 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StarWars.Api.Data;
 using StarWars.Api.Services;
+using System.Text.Json.Serialization;
+using StarWars.Api.Security;
+using StarWars.Api.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,12 +41,16 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("RequireRegularUser", policy => policy.RequireRole("User"));
+    options.AddPolicy("RequireAdmin", policy => policy.RequireRole(nameof(StarWars.Api.Models.UserRole.Admin)));
+    options.AddPolicy("RequireRegularUser", policy => policy.RequireRole(nameof(StarWars.Api.Models.UserRole.User)));
 });
 
 // Controllers
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(o =>
+    {
+        o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -63,11 +70,33 @@ builder.Services.AddSwaggerGen(c =>
         { securityScheme, new[] { "Bearer" } }
     };
     c.AddSecurityRequirement(securityRequirement);
+    // ApiKey header for Swagger
+    var apiKeyScheme = new OpenApiSecurityScheme
+    {
+        Description = "ApiKey para poder autorizar petición",
+        Name = builder.Configuration.GetSection("ApiKeyConfiguration").GetValue<string>("Header") ?? "ApiKey",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "ApiKey" }
+    };
+    c.AddSecurityDefinition("ApiKey", apiKeyScheme);
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { apiKeyScheme, Array.Empty<string>() }
+    });
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    if (File.Exists(xmlPath))
+    {
+        c.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+    }
+    c.OperationFilter<ApiKeyHeaderOperationFilter>();
 });
 
 // Options and Services
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.Configure<SwapiSettings>(builder.Configuration.GetSection("Swapi"));
+builder.Services.Configure<ApiKeyConfiguration>(builder.Configuration.GetSection("ApiKeyConfiguration"));
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IMovieService, MovieService>();
 builder.Services.AddHttpClient<ISwapiService, SwapiService>();
@@ -82,6 +111,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ApiKeyMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -90,4 +120,3 @@ app.MapControllers();
 app.Run();
 
 public partial class Program { }
-

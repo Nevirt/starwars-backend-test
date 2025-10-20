@@ -87,5 +87,3 @@ public class SwapiService : ISwapiService
         return count;
     }
 }
-
-

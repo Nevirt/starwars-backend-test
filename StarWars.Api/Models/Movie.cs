@@ -10,5 +10,3 @@ public class Movie
     public string? Producer { get; set; }
     public string? ExternalId { get; set; }
 }
-
-

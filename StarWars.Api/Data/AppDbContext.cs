@@ -18,5 +18,3 @@ public class AppDbContext : DbContext
         base.OnModelCreating(modelBuilder);
     }
 }
-
-

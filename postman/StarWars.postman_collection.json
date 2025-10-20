@@ -1,0 +1,137 @@
+{
+  "info": {
+    "_postman_id": "b7c2a9b9-7c2e-4f93-9b39-8a6df8d2d9a1",
+    "name": "StarWars API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Colección para probar StarWars API con ApiKey y JWT. Configure variables en el Environment."
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{jwt}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5242" },
+    { "key": "apiKey", "value": "sUApBf-2QBOra+~_(o*G~gd4JKD0#" },
+    { "key": "jwt", "value": "" },
+    { "key": "movieId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "SignUp (returns JWT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"ApiKey","value":"{{apiKey}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/auth/signup","host":["{{baseUrl}}"],"path":["api","auth","signup"]},
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"user{{$randomInt}}@mail.com\",\n  \"password\": \"Passw0rd!\",\n  \"role\": \"User\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login (returns JWT)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"ApiKey","value":"{{apiKey}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/auth/login","host":["{{baseUrl}}"],"path":["api","auth","login"]},
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"<email_del_signup>\",\n  \"password\": \"Passw0rd!\"\n}"
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Movies",
+      "item": [
+        {
+          "name": "List Movies (public)",
+          "request": {
+            "method": "GET",
+            "header": [ {"key":"ApiKey","value":"{{apiKey}}"} ],
+            "url": {"raw": "{{baseUrl}}/api/movies","host":["{{baseUrl}}"],"path":["api","movies"]}
+          },
+          "response": []
+        },
+        {
+          "name": "Get Movie by Id (User role)",
+          "request": {
+            "method": "GET",
+            "header": [ {"key":"ApiKey","value":"{{apiKey}}"} ],
+            "url": {"raw": "{{baseUrl}}/api/movies/{{movieId}}","host":["{{baseUrl}}"],"path":["api","movies","{{movieId}}"]}
+          },
+          "response": []
+        },
+        {
+          "name": "Create Movie (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key":"ApiKey","value":"{{apiKey}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/movies","host":["{{baseUrl}}"],"path":["api","movies"]},
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"A New Hope\",\n  \"description\": \"\",\n  \"releaseYear\": 1977,\n  \"director\": \"George Lucas\",\n  \"producer\": \"Lucasfilm\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Movie (Admin)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {"key":"ApiKey","value":"{{apiKey}}"},
+              {"key":"Content-Type","value":"application/json"}
+            ],
+            "url": {"raw": "{{baseUrl}}/api/movies/{{movieId}}","host":["{{baseUrl}}"],"path":["api","movies","{{movieId}}"]},
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"A New Hope (Remastered)\",\n  \"description\": null,\n  \"releaseYear\": 1977,\n  \"director\": \"George Lucas\",\n  \"producer\": \"Lucasfilm\"\n}"
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Movie (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [ {"key":"ApiKey","value":"{{apiKey}}"} ],
+            "url": {"raw": "{{baseUrl}}/api/movies/{{movieId}}","host":["{{baseUrl}}"],"path":["api","movies","{{movieId}}"]}
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Sync Films from SWAPI (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [ {"key":"ApiKey","value":"{{apiKey}}"} ],
+            "url": {"raw": "{{baseUrl}}/api/admin/sync-films","host":["{{baseUrl}}"],"path":["api","admin","sync-films"]}
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

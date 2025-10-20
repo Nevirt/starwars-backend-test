@@ -137,3 +137,5 @@ C:\Users\marti\Documents\starWars-Backend-test\StarWars.Api\obj\Debug\net8.0\ref
 C:\Users\marti\Documents\starWars-Backend-test\StarWars.Api\obj\Debug\net8.0\StarWars.Api.pdb
 C:\Users\marti\Documents\starWars-Backend-test\StarWars.Api\obj\Debug\net8.0\StarWars.Api.genruntimeconfig.cache
 C:\Users\marti\Documents\starWars-Backend-test\StarWars.Api\obj\Debug\net8.0\ref\StarWars.Api.dll
+C:\Users\marti\Documents\starWars-Backend-test\StarWars.Api\obj\Debug\net8.0\StarWars.Api.xml
+C:\Users\marti\Documents\starWars-Backend-test\StarWars.Api\bin\Debug\net8.0\StarWars.Api.xml

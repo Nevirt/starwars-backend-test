@@ -459,3 +459,4 @@ C:\Users\marti\Documents\starWars-Backend-test\StarWars.Tests\obj\Debug\net8.0\r
 C:\Users\marti\Documents\starWars-Backend-test\StarWars.Tests\obj\Debug\net8.0\StarWars.Tests.pdb
 C:\Users\marti\Documents\starWars-Backend-test\StarWars.Tests\obj\Debug\net8.0\StarWars.Tests.genruntimeconfig.cache
 C:\Users\marti\Documents\starWars-Backend-test\StarWars.Tests\obj\Debug\net8.0\ref\StarWars.Tests.dll
+C:\Users\marti\Documents\starWars-Backend-test\StarWars.Tests\bin\Debug\net8.0\StarWars.Api.xml
